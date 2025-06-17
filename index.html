@@ -12,44 +12,59 @@
         <h2>Pokedex</h2>
 
         <div class="pokemon-boxes">
-            <div class="pokemon-box">
-                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/132.png" alt="">
-                <p>Charmander</p>
-            </div>
+    
+            
 
-            <div class="pokemon-box">
-                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/132.png" alt="">
-                <p>Charmander</p>
-            </div>
-
-            <div class="pokemon-box">
-                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/132.png" alt="">
-                <p>Charmander</p>
-            </div>
         </div>
 
-        <div class="pokemon-boxes">
-            <div class="pokemon-box">
-                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/132.png" alt="">
-                <p>Charmander</p>
-            </div>
-
-            <div class="pokemon-box">
-                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/132.png" alt="">
-                <p>Charmander</p>
-            </div>
-
-            <div class="pokemon-box">
-                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/132.png" alt="">
-                <p>Charmander</p>
-            </div>
         </div>
     </div>
 
-    <script>    
-        fetch('https://pokeapi.co/api/v2/pokemon?limit=10')
-        .then(res => res.json())
-        .then(allpokemon => console.log(allpokemon))
+    <script>
+        pegaPokemons()
+
+        function pegaPokemons(quantidade){
+            
+            fetch("https://pokeapi.co/api/v2/pokemon?limit=+ quantidade+&offsett=0")
+            .then(res => res.json())
+            .then(allpokemon =>{
+            
+                var pokemons =[];
+
+                allpokemon.results.map((val)=>{
+
+                    fetch(val.url)
+                    .then(res => res.json())
+                    .then(pokemonsingle=>{ 
+                        pokemons.push({name:val.name,imagem:pokemonsingle.sprites.front_default});
+
+                        if(pokemons.length == quantidade){
+
+                                var pokemonBoxes = document.querySelector('.pokemon-boxes')
+                                pokemonBoxes.innerHTML ="";
+
+                                pokemons.map(function(val){
+                                pokemonBoxes.innerHTML+=`
+
+                                <div class="pokemon-box">
+                                    <img src="${val.imagem}" alt="">
+                                    <p>${val.name}</p>
+                                </div>
+                                `;
+
+                                
+        
+                            })
+                            
+                        }
+
+                        
+                    })//then.map
+                })//map
+            })//then
+
+        }
+
     </script>
     
 </body>
