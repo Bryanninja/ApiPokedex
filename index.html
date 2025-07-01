@@ -10,22 +10,25 @@
 
     <div class="main">
         <h2>Pokedex</h2>
-
-        <div class="pokemon-boxes">
-    
-            
-
-        </div>
+        <form action="" onsubmit="quantidadeSelecionar(event)">
+            <input type="number" placeholder="Digite a quantidade...">
+            <input type="submit">
+        </form>
+        
+        <div class="pokemon-boxes"></div>
 
         </div>
     </div>
 
     <script>
-        pegaPokemons()
 
-        function pegaPokemons(quantidade){
-            
-            fetch("https://pokeapi.co/api/v2/pokemon?limit=+ quantidade+&offsett=0")
+        function quantidadeSelecionar(e){
+            e.preventDefault()
+            const input = document.querySelector('[type=number]');
+            const valor = input.value
+            input.value= "";
+
+            fetch(`https://pokeapi.co/api/v2/pokemon?limit=${valor}&offset=0`)
             .then(res => res.json())
             .then(allpokemon =>{
             
@@ -38,7 +41,7 @@
                     .then(pokemonsingle=>{ 
                         pokemons.push({name:val.name,imagem:pokemonsingle.sprites.front_default});
 
-                        if(pokemons.length == quantidade){
+                        if(pokemons.length == valor){
 
                                 var pokemonBoxes = document.querySelector('.pokemon-boxes')
                                 pokemonBoxes.innerHTML ="";
@@ -64,6 +67,9 @@
             })//then
 
         }
+
+
+            
 
     </script>
     
